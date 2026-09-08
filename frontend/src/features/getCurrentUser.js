@@ -6,7 +6,7 @@ import api from "../../utils/axios";
 
         console.log("Current user data:", data);
 
-        // return data;
+        return data;
     }
     catch (error) {
         console.error("Error fetching current user:", error);

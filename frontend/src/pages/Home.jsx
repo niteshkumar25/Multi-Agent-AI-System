@@ -2,10 +2,12 @@ import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../utils/firebase";
 import api from "../../utils/axios";
 import { FcGoogle } from "react-icons/fc";
+import { useSelector } from "react-redux";
 
 // import '@tailwindcss/vite'
 
 function Home() {
+  const {userData} = useSelector(state=>state.user)
   const LoginApi = async (token) => {
     try {
       const { data } = await api.post("/auth/login", {
@@ -57,7 +59,7 @@ return (
     </div>
 
     {/* Overlay */}
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md">
+{!userData &&     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md">
       {/* Login Modal */}
       <div className="w-[340px] rounded-2xl border border-white/[0.08] bg-[#13151c]/95 p-7 shadow-2xl">
         <div className="flex flex-col gap-1">
@@ -79,7 +81,7 @@ return (
           <span>Continue with Google</span>
         </button>
       </div>
-    </div>
+    </div>}
   </div>
 );
 
