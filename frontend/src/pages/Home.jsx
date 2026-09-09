@@ -8,6 +8,10 @@ import { useSelector } from "react-redux";
 
 function Home() {
   const {userData} = useSelector(state=>state.user)
+
+  console.log("userData", userData);
+  
+
   const LoginApi = async (token) => {
     try {
       const { data } = await api.post("/auth/login", {
