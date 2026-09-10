@@ -6,6 +6,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { getUser } from "./controllers/user.controller.js";
 import protect from "./middleware/auth.middleware.js";
+import { proxyWithHeader } from "./utils/proxyWithHeaders.js";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ const PORT = process.env.PORT || 8000;
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use("/auth", proxy(process.env.AUTHSERVICE_URL));
+app.use("/chat",protect, proxyWithHeader(process.env.CHATSERVICE_URL));
 app.get("/getUser", protect, getUser)
 
 
