@@ -1,5 +1,5 @@
 import express from "express";
-import { createConversation, getConversation, getMessages, saveMessage, updateConversation } from "../controllers/chat.controller";
+import { createConversation, getConversation, getMessages, saveMessage, updateConversation } from "../controllers/chat.controller.js";
 
 const router = express.Router();
 

@@ -25,6 +25,7 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 app.use("/auth", proxy(process.env.AUTHSERVICE_URL));
 app.use("/chat",protect, proxyWithHeader(process.env.CHATSERVICE_URL));
+app.use("/agent",protect, proxy(process.env.AGETSERVICE_URL));
 app.get("/getUser", protect, getUser)
 
 
