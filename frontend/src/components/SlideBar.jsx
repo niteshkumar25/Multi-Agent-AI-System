@@ -1,147 +1,99 @@
 import React from "react";
 import {
-  FiPlus,
-  FiMessageSquare,
-  FiSearch,
-  FiCode,
-  FiFileText,
-  FiImage,
+  FiHome,
+  FiFolder,
+  FiClock,
   FiSettings,
-  FiChevronDown,
+  FiPlus,
+  FiChevronRight,
 } from "react-icons/fi";
 
 function SlideBar() {
-  const agents = [
-    {
-      name: "Chat",
-      icon: <FiMessageSquare />,
-    },
-    {
-      name: "Search",
-      icon: <FiSearch />,
-    },
-    {
-      name: "Coding",
-      icon: <FiCode />,
-    },
-    {
-      name: "PDF",
-      icon: <FiFileText />,
-    },
-    {
-      name: "Vision",
-      icon: <FiImage />,
-    },
-  ];
-
-  const chats = [
-    "Build authentication API",
-    "Explain LangGraph",
-    "React dashboard",
-    "Docker configuration",
-  ];
-
   return (
-    <aside className="flex h-screen w-[270px] shrink-0 flex-col border-r border-white/[0.06] bg-[#0b0d12]">
+    <aside className="flex h-screen w-[230px] shrink-0 flex-col border-r border-white/[0.06] bg-[#0b0d12]">
 
-      {/* Header */}
-      <div className="flex h-[64px] items-center justify-between border-b border-white/[0.06] px-4">
+      {/* Logo */}
+      <div className="flex h-[68px] items-center gap-3 border-b border-white/[0.06] px-5">
 
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.08]">
-            ✦
-          </div>
-
-          <div>
-            <p className="text-sm font-semibold text-white">
-              Multi-Agent
-            </p>
-
-            <p className="text-[11px] text-slate-500">
-              AI Workspace
-            </p>
-          </div>
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-sm font-bold text-black">
+          ✦
         </div>
 
-        <button className="text-slate-500 transition hover:text-white">
-          <FiChevronDown size={16} />
-        </button>
+        <div>
+          <p className="text-sm font-semibold">
+            Aether
+          </p>
+
+          <p className="text-[10px] text-slate-600">
+            AI WORKSPACE
+          </p>
+        </div>
+
       </div>
 
-      {/* New Chat */}
+      {/* Navigation */}
       <div className="p-3">
-        <button className="flex w-full items-center gap-2 rounded-xl bg-white px-3 py-2.5 text-sm font-medium text-black transition hover:bg-slate-200">
-          <FiPlus size={17} />
-          New Chat
-        </button>
+
+        <NavItem
+          icon={<FiHome />}
+          text="Overview"
+          active
+        />
+
+        <NavItem
+          icon={<FiFolder />}
+          text="Projects"
+        />
+
+        <NavItem
+          icon={<FiClock />}
+          text="History"
+        />
+
       </div>
 
-      {/* Agents */}
-      <div className="px-3">
+      {/* Projects */}
+      <div className="mt-4 px-3">
 
-        <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-wider text-slate-600">
-          Agents
-        </p>
+        <div className="mb-2 flex items-center justify-between px-2">
 
-        <div className="space-y-1">
-          {agents.map((agent) => (
-            <button
-              key={agent.name}
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-400 transition hover:bg-white/[0.05] hover:text-white"
-            >
-              <span className="text-base">
-                {agent.icon}
-              </span>
+          <span className="text-[10px] font-semibold tracking-widest text-slate-600">
+            PROJECTS
+          </span>
 
-              {agent.name}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Chat History */}
-      <div className="mt-6 flex-1 overflow-y-auto px-3">
-
-        <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-wider text-slate-600">
-          Recent Chats
-        </p>
-
-        <div className="space-y-1">
-
-          {chats.map((chat, index) => (
-            <button
-              key={index}
-              className="w-full truncate rounded-lg px-3 py-2 text-left text-sm text-slate-500 transition hover:bg-white/[0.05] hover:text-slate-200"
-            >
-              {chat}
-            </button>
-          ))}
+          <button className="text-slate-600 hover:text-white">
+            <FiPlus size={14} />
+          </button>
 
         </div>
+
+        <Project name="Multi-Agent AI" />
+        <Project name="RAG Assistant" />
+        <Project name="Developer Tools" />
+
       </div>
 
       {/* Bottom */}
-      <div className="border-t border-white/[0.06] p-3">
+      <div className="mt-auto border-t border-white/[0.06] p-3">
 
-        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-slate-400 transition hover:bg-white/[0.05] hover:text-white">
-          <FiSettings />
-          Settings
-        </button>
+        <NavItem
+          icon={<FiSettings />}
+          text="Settings"
+        />
 
-        {/* User */}
-        <div className="mt-2 flex items-center gap-3 rounded-xl bg-white/[0.03] p-2.5">
+        <div className="mt-2 flex items-center gap-3 rounded-lg px-2 py-2">
 
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-500 text-xs font-semibold">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-500/20 text-xs text-indigo-300">
             NK
           </div>
 
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-xs font-medium text-white">
-              User
+          <div className="min-w-0">
+            <p className="truncate text-xs font-medium">
+              Developer
             </p>
 
-            <p className="truncate text-[11px] text-slate-600">
-              Free plan
+            <p className="text-[10px] text-slate-600">
+              Free workspace
             </p>
           </div>
 
@@ -150,6 +102,38 @@ function SlideBar() {
       </div>
 
     </aside>
+  );
+}
+
+function NavItem({ icon, text, active }) {
+  return (
+    <button
+      className={`mb-1 flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition ${
+        active
+          ? "bg-white/[0.07] text-white"
+          : "text-slate-500 hover:bg-white/[0.04] hover:text-slate-200"
+      }`}
+    >
+      {icon}
+      {text}
+    </button>
+  );
+}
+
+function Project({ name }) {
+  return (
+    <button className="group flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs text-slate-500 hover:bg-white/[0.04] hover:text-white">
+
+      <span className="truncate">
+        {name}
+      </span>
+
+      <FiChevronRight
+        size={13}
+        className="opacity-0 transition group-hover:opacity-100"
+      />
+
+    </button>
   );
 }
 

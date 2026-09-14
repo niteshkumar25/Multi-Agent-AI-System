@@ -1,158 +1,171 @@
 import React, { useState } from "react";
 import {
-  FiPaperclip,
   FiArrowUp,
-  FiChevronDown,
-  FiGlobe,
   FiCode,
+  FiGlobe,
   FiFileText,
+  FiLayers,
+  FiPaperclip,
 } from "react-icons/fi";
 
 function ChatArea() {
   const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!message.trim()) return;
-
-    console.log("Message:", message);
-
-    setMessage("");
-  };
-
   return (
-    <main className="flex min-w-0 flex-1 flex-col bg-[#0d0f14]">
+    <main className="flex min-w-0 flex-1 flex-col">
 
-      {/* Top bar */}
-      <header className="flex h-[64px] shrink-0 items-center justify-between border-b border-white/[0.06] px-6">
+      {/* Top */}
+      <header className="flex h-[68px] shrink-0 items-center justify-between border-b border-white/[0.06] px-7">
 
-        <div className="flex items-center gap-2">
+        <div>
+          <p className="text-sm font-medium">
+            Workspace
+          </p>
 
-          <button className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-medium text-slate-300 transition hover:bg-white/[0.05] hover:text-white">
-
-            <span>Chat Agent</span>
-
-            <FiChevronDown size={14} />
-
-          </button>
-
+          <p className="text-[11px] text-slate-600">
+            Multi-Agent AI System
+          </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 rounded-full border border-white/[0.06] px-3 py-1.5">
 
-          <span className="h-2 w-2 rounded-full bg-green-400" />
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
 
-          <span className="text-xs text-slate-500">
-            Online
+          <span className="text-[11px] text-slate-500">
+            System ready
           </span>
 
         </div>
 
       </header>
 
-      {/* Messages */}
+      {/* Content */}
       <div className="flex-1 overflow-y-auto">
 
-        <div className="mx-auto flex w-full max-w-3xl flex-col px-6 py-10">
+        <div className="mx-auto max-w-4xl px-8 py-12">
 
-          {/* Empty state */}
-          <div className="flex flex-1 flex-col items-center justify-center py-24 text-center">
+          {/* Welcome */}
+          <section>
 
-            <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.03] text-2xl">
-              ✦
-            </div>
-
-            <h1 className="text-2xl font-semibold text-white">
-              How can I help you?
-            </h1>
-
-            <p className="mt-2 max-w-md text-sm leading-6 text-slate-500">
-              Ask a question, search the web, write code, analyze a PDF,
-              create a presentation, or process an image.
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-600">
+              AI Workspace
             </p>
 
-            {/* Suggestions */}
-            <div className="mt-8 grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
+            <h1 className="mt-3 text-4xl font-semibold tracking-tight">
+              Build something intelligent.
+            </h1>
 
-              <Suggestion
-                icon={<FiCode />}
-                title="Write some code"
-                text="Build a REST API with Node.js"
+            <p className="mt-3 max-w-xl text-sm leading-6 text-slate-500">
+              Route tasks between specialized agents for coding,
+              research, documents, presentations and vision.
+            </p>
+
+          </section>
+
+          {/* Agents */}
+          <section className="mt-12">
+
+            <div className="mb-4 flex items-center justify-between">
+
+              <h2 className="text-xs font-medium uppercase tracking-widest text-slate-600">
+                Start with an agent
+              </h2>
+
+              <span className="text-[11px] text-slate-700">
+                6 available
+              </span>
+
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+
+              <AgentCard
+                icon={<FiLayers />}
+                name="Chat"
+                description="General reasoning"
               />
 
-              <Suggestion
+              <AgentCard
                 icon={<FiGlobe />}
-                title="Search the web"
-                text="Find the latest AI news"
+                name="Search"
+                description="Web research"
               />
 
-              <Suggestion
+              <AgentCard
+                icon={<FiCode />}
+                name="Coding"
+                description="Write & debug"
+              />
+
+              <AgentCard
                 icon={<FiFileText />}
-                title="Analyze a document"
-                text="Summarize a PDF"
+                name="PDF"
+                description="Read documents"
               />
 
-              <Suggestion
+              <AgentCard
+                icon={<FiLayers />}
+                name="PPT"
+                description="Create slides"
+              />
+
+              <AgentCard
                 icon={<FiPaperclip />}
-                title="Upload a file"
-                text="Analyze my document"
+                name="Vision"
+                description="Analyze images"
               />
 
             </div>
 
-          </div>
+          </section>
+
+          {/* Recent */}
+          <section className="mt-12">
+
+            <h2 className="mb-4 text-xs font-medium uppercase tracking-widest text-slate-600">
+              Recent activity
+            </h2>
+
+            <div className="divide-y divide-white/[0.05] rounded-xl border border-white/[0.06]">
+
+              <Activity title="Authentication service" type="Coding" />
+              <Activity title="LangGraph router" type="Coding" />
+              <Activity title="Distributed systems notes" type="PDF" />
+
+            </div>
+
+          </section>
 
         </div>
 
       </div>
 
       {/* Input */}
-      <div className="shrink-0 px-4 pb-5">
+      <div className="border-t border-white/[0.06] bg-[#0b0d12] px-8 py-5">
 
-        <form
-          onSubmit={handleSubmit}
-          className="mx-auto max-w-3xl"
-        >
+        <div className="mx-auto max-w-4xl">
 
-          <div className="rounded-2xl border border-white/[0.08] bg-[#13161d] shadow-xl">
+          <div className="rounded-xl border border-white/[0.08] bg-[#11141b]">
 
-            {/* Input */}
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Message your AI agent..."
-              rows={3}
-              className="w-full resize-none bg-transparent px-4 pt-4 text-sm text-white outline-none placeholder:text-slate-600"
+              placeholder="Describe what you want to build..."
+              rows={2}
+              className="w-full resize-none bg-transparent px-4 py-4 text-sm outline-none placeholder:text-slate-600"
             />
 
-            {/* Toolbar */}
             <div className="flex items-center justify-between px-3 pb-3">
 
-              <div className="flex items-center gap-1">
-
-                <button
-                  type="button"
-                  className="rounded-lg p-2 text-slate-500 transition hover:bg-white/[0.06] hover:text-white"
-                >
-                  <FiPaperclip size={17} />
-                </button>
-
-                <button
-                  type="button"
-                  className="rounded-lg px-2.5 py-1.5 text-xs text-slate-500 transition hover:bg-white/[0.06] hover:text-white"
-                >
-                  + Tools
-                </button>
-
-              </div>
+              <button className="flex items-center gap-2 rounded-md px-2 py-1.5 text-xs text-slate-600 hover:bg-white/[0.05] hover:text-white">
+                <FiPaperclip size={14} />
+                Attach
+              </button>
 
               <button
-                type="submit"
-                disabled={!message.trim()}
-                className="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-black transition hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-30"
+                className="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-black transition hover:bg-slate-200"
               >
-                <FiArrowUp size={17} />
+                <FiArrowUp size={16} />
               </button>
 
             </div>
@@ -160,10 +173,10 @@ function ChatArea() {
           </div>
 
           <p className="mt-2 text-center text-[10px] text-slate-700">
-            AI can make mistakes. Check important information.
+            The router automatically selects the best agent for your task.
           </p>
 
-        </form>
+        </div>
 
       </div>
 
@@ -171,23 +184,45 @@ function ChatArea() {
   );
 }
 
-function Suggestion({ icon, title, text }) {
+function AgentCard({ icon, name, description }) {
   return (
-    <button className="group rounded-xl border border-white/[0.06] bg-white/[0.02] p-4 text-left transition hover:border-white/[0.12] hover:bg-white/[0.04]">
+    <button className="group rounded-xl border border-white/[0.06] bg-[#10131a] p-4 text-left transition duration-200 hover:-translate-y-0.5 hover:border-white/[0.12] hover:bg-[#141821]">
 
-      <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.05] text-slate-400 transition group-hover:text-white">
+      <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-lg bg-white/[0.05] text-slate-400 group-hover:text-white">
         {icon}
       </div>
 
-      <p className="text-sm font-medium text-slate-300">
-        {title}
+      <p className="text-sm font-medium">
+        {name}
       </p>
 
       <p className="mt-1 text-xs text-slate-600">
-        {text}
+        {description}
       </p>
 
     </button>
+  );
+}
+
+function Activity({ title, type }) {
+  return (
+    <div className="flex items-center justify-between px-4 py-3">
+
+      <div>
+        <p className="text-sm text-slate-300">
+          {title}
+        </p>
+
+        <p className="mt-1 text-[10px] text-slate-600">
+          Recently opened
+        </p>
+      </div>
+
+      <span className="rounded-md bg-white/[0.04] px-2 py-1 text-[10px] text-slate-500">
+        {type}
+      </span>
+
+    </div>
   );
 }
 

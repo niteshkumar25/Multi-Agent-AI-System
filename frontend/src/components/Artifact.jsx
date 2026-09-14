@@ -1,115 +1,139 @@
 import React from "react";
 import {
   FiCode,
-  FiX,
-  FiDownload,
-  FiMaximize2,
-  FiCopy,
+  FiTerminal,
+  FiActivity,
+  FiChevronRight,
 } from "react-icons/fi";
 
 function Artifact() {
   return (
-    <aside className="hidden h-screen w-[330px] shrink-0 flex-col border-l border-white/[0.06] bg-[#0b0d12] lg:flex">
+    <aside className="hidden h-screen w-[300px] shrink-0 flex-col border-l border-white/[0.06] bg-[#0b0d12] lg:flex">
 
       {/* Header */}
-      <div className="flex h-[64px] shrink-0 items-center justify-between border-b border-white/[0.06] px-4">
+      <div className="flex h-[68px] items-center justify-between border-b border-white/[0.06] px-5">
 
-        <div className="flex items-center gap-2.5">
+        <div>
+          <p className="text-sm font-medium">
+            Agent Activity
+          </p>
 
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.05] text-slate-400">
-            <FiCode size={16} />
-          </div>
-
-          <div>
-            <p className="text-sm font-medium text-white">
-              Artifact
-            </p>
-
-            <p className="text-[11px] text-slate-600">
-              Generated output
-            </p>
-          </div>
-
+          <p className="mt-1 text-[10px] text-slate-600">
+            Live execution
+          </p>
         </div>
 
-        <button className="rounded-lg p-2 text-slate-600 transition hover:bg-white/[0.05] hover:text-white">
-          <FiX size={16} />
-        </button>
+        <span className="h-2 w-2 rounded-full bg-emerald-400" />
 
       </div>
 
-      {/* File info */}
-      <div className="border-b border-white/[0.06] px-4 py-3">
+      {/* Agent Status */}
+      <div className="p-4">
 
-        <div className="flex items-center justify-between">
+        <div className="rounded-xl border border-white/[0.06] bg-[#10131a] p-4">
 
-          <div>
-            <p className="text-xs font-medium text-slate-300">
-              server.js
-            </p>
+          <div className="flex items-center gap-3">
 
-            <p className="mt-0.5 text-[10px] text-slate-600">
-              JavaScript
-            </p>
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-300">
+              <FiActivity />
+            </div>
+
+            <div>
+              <p className="text-xs font-medium">
+                Router
+              </p>
+
+              <p className="mt-1 text-[10px] text-emerald-400">
+                Running
+              </p>
+            </div>
+
           </div>
 
-          <div className="flex items-center gap-1">
-
-            <button className="rounded-lg p-2 text-slate-600 transition hover:bg-white/[0.05] hover:text-white">
-              <FiCopy size={14} />
-            </button>
-
-            <button className="rounded-lg p-2 text-slate-600 transition hover:bg-white/[0.05] hover:text-white">
-              <FiDownload size={14} />
-            </button>
-
-            <button className="rounded-lg p-2 text-slate-600 transition hover:bg-white/[0.05] hover:text-white">
-              <FiMaximize2 size={14} />
-            </button>
-
+          <div className="mt-4 h-1 overflow-hidden rounded-full bg-white/[0.05]">
+            <div className="h-full w-[72%] rounded-full bg-indigo-400" />
           </div>
 
         </div>
 
       </div>
 
-      {/* Code */}
-      <div className="flex-1 overflow-auto bg-[#080a0e] p-4">
+      {/* Execution */}
+      <div className="px-4">
 
-        <pre className="font-mono text-[12px] leading-6 text-slate-400">
-          <code>
-{`import express from "express";
+        <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-slate-600">
+          Execution
+        </p>
 
-const app = express();
+        <Step
+          icon={<FiCode />}
+          title="Coding Agent"
+          status="Completed"
+        />
 
-app.use(express.json());
+        <Step
+          icon={<FiTerminal />}
+          title="Tool execution"
+          status="Running"
+          active
+        />
 
-app.get("/api/health", (req, res) => {
-  res.json({
-    status: "ok"
-  });
-});
-
-app.listen(3000, () => {
-  console.log(
-    "Server running on port 3000"
-  );
-});`}
-          </code>
-        </pre>
+        <Step
+          icon={<FiActivity />}
+          title="Response"
+          status="Waiting"
+        />
 
       </div>
 
-      {/* Bottom */}
-      <div className="border-t border-white/[0.06] p-3">
+      {/* Output */}
+      <div className="mt-auto border-t border-white/[0.06] p-4">
 
-        <button className="w-full rounded-lg bg-white px-3 py-2 text-xs font-medium text-black transition hover:bg-slate-200">
-          Apply Changes
+        <button className="flex w-full items-center justify-between rounded-lg border border-white/[0.06] bg-[#10131a] px-3 py-3 text-xs text-slate-400 transition hover:bg-white/[0.04] hover:text-white">
+
+          <span>Open generated artifact</span>
+
+          <FiChevronRight />
+
         </button>
 
       </div>
 
     </aside>
+  );
+}
+
+function Step({ icon, title, status, active }) {
+  return (
+    <div className="flex items-center gap-3 border-b border-white/[0.04] py-3">
+
+      <div
+        className={`flex h-8 w-8 items-center justify-center rounded-lg ${
+          active
+            ? "bg-indigo-500/10 text-indigo-300"
+            : "bg-white/[0.03] text-slate-600"
+        }`}
+      >
+        {icon}
+      </div>
+
+      <div className="min-w-0 flex-1">
+
+        <p className="text-xs text-slate-400">
+          {title}
+        </p>
+
+        <p
+          className={`mt-1 text-[10px] ${
+            active ? "text-indigo-300" : "text-slate-700"
+          }`}
+        >
+          {status}
+        </p>
+
+      </div>
+
+    </div>
   );
 }
 
