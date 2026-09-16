@@ -40,22 +40,6 @@ function SlideBar() {
 
         const data = await getConversations();
 
-        /*
-         * Depending on your backend response,
-         * data may be:
-         *
-         * [
-         *   {...},
-         *   {...}
-         * ]
-         *
-         * OR:
-         *
-         * {
-         *   conversations: [...]
-         * }
-         */
-
         const conversationList = Array.isArray(data)
           ? data
           : data?.conversations || [];
@@ -86,18 +70,7 @@ function SlideBar() {
       const data = await createConversation();
 
       if (!data) return;
-
-      /*
-       * If backend returns:
-       *
-       * {
-       *   conversation: {...}
-       * }
-       *
-       * use data.conversation
-       *
-       * Otherwise use data directly.
-       */
+      
       const newConversation =
         data?.conversation || data;
 
