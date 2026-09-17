@@ -21,7 +21,7 @@ import {
 } from "../redux/conversationSlice";
 
 import getCurrentUser from "../features/getCurrentUser";
-import logoutUser from "../features/logout";
+import { logoutUser } from "../features/logout";
 import { getConversations } from "../features/getConversations";
 import { createConversation } from "../features/createConversation";
 import { setUserData } from "../redux/userSlice";
@@ -163,12 +163,8 @@ function SlideBar() {
       /*
        * Clear local user state
        */
-      setUser(null);
+      dispatch(setUserData(null))
 
-      /*
-       * Optional:
-       * Clear selected conversation
-       */
       dispatch(
         setSelectedConversations(null)
       );
@@ -183,7 +179,7 @@ function SlideBar() {
         error
       );
     } finally {
-      setLoggingOut(false);
+      // setLoggingOut(false);
     }
   };
 
@@ -433,10 +429,7 @@ function SlideBar() {
           <button
             type="button"
             title="Logout"
-            onClick={()=>{
-              logoutUser()
-              dispatch(setUserData(null))
-            }}
+            onClick={handleLogout}
             disabled={loggingOut}
             className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-slate-500 transition hover:bg-red-500/10 hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-50"
           >

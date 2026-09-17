@@ -1,15 +1,14 @@
 import api from "../../utils/axios";
 
-const logoutUser = async () => {
+export const logoutUser = async () => {
   try {
-    const { data } = await api.get(
-      "/auth/logout",
-    );
+    const response = await api.post("/auth/logout");
 
+    console.log("Logout response:", response.status);
+
+    return response.data;
   } catch (error) {
     console.error("Logout error:", error);
     throw error;
   }
 };
-
-export default logoutUser;

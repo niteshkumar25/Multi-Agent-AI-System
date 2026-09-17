@@ -3,6 +3,10 @@ import redis from '../../shared/redis/redis.js';
 const protect = async (req, res, next) => {
   try {
     const sessionId = req.cookies?.session;
+
+    console.log("sessionId, sessionId");
+    
+
     if (!sessionId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
