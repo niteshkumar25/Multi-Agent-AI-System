@@ -62,14 +62,21 @@ export const saveMessage = async (req, res) => {
 
 export const getMessages = async (req, res) => {
   try {
+
+
+    console.log("conversationId", req.params.conversationId);
+    
+
     const messages = await Message.find({
-      conversationId:req.parmas.conversationId,
+      conversationId:req.params.conversationId,
     }).sort({
-      createdAt: -1,
+      createdAt: 1,
     });
 
     return res.status(200).json(messages);
   } catch (error) {
+    console.log("error", error)
+
     res.status(500).json({ message: "Internal server error" });
   }
 };

@@ -1,9 +1,9 @@
-import { getModel } from "../config/llmModels"
+import { getModel } from "../config/llmModels.js"
 
 export const chatAgent  = async(state)=>{
-    const llm = await getModel("chat");
+    const llm = getModel("chat");
     const systemPrompt = "Your Multi Ai Agent, An Intelligent AI Assistant"
-    const response = llm.invoke([
+    const response = await llm.invoke([
         {
             role:"system",
             content:systemPrompt

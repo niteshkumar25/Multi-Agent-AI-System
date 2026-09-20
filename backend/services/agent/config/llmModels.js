@@ -6,12 +6,15 @@ dotenv.config();
 
 const groq = new ChatGroq({
     model: "openai/gpt-oss-120b",
-    apiKey:process.env.GROQ_API_KEY
+    apiKey:process.env.GROQ_API_KEY,
+    temperature: 0.7,
+    maxTokens: 2048,                     // ← Critical: enough for reasoning + output
+    reasoningEffort: "low",
 })
 
 
 const gemini = new ChatGoogleGenerativeAI({
-    model: "gemini-2.5-pro",
+    model: "gemini-3.1-pro-preview",
     apiKey:process.env.GOOGLE_API_KEY
 })
 

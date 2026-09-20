@@ -1,7 +1,10 @@
 import { getModel } from "../config/llmModels.js"
 
 export const router = async (state) => {
-    const llm = await getModel("router");
+    const llm = getModel("router");
+
+    console.log("llm", llm.model);
+    
 
     const prompt = `
 You are a routing agent for a multi-agent AI system.
@@ -69,15 +72,12 @@ Do not provide explanations.
 Do not use markdown.
 
 User request:
-${state.messages[state.messages.length - 1].content}
+${state.prompt}
 `;
+  const response = await llm.invoke(prompt);
 
-    const response = await llm.invoke(prompt);
-    console.log("response", response);
-    
-
-    return {
-        ...state,
-        nextAgent: response.content.trim().toLowerCase()
-    };
+  return {
+    ...state,
+    agent: response.content.trim().toLowerCase(),
+  };
 };

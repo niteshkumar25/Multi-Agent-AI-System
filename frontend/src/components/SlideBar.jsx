@@ -29,10 +29,9 @@ import { setUserData } from "../redux/userSlice";
 function SlideBar() {
   const dispatch = useDispatch();
 
-  const {
-    conversations,
-    selectedConversation,
-  } = useSelector((state) => state.conversation);
+  const { conversations, selectedConversation } = useSelector(
+    (state) => state.conversation,
+  );
 
   const [loading, setLoading] = useState(false);
   const [creating, setCreating] = useState(false);
@@ -41,6 +40,8 @@ function SlideBar() {
   const [userLoading, setUserLoading] = useState(true);
 
   const [loggingOut, setLoggingOut] = useState(false);
+
+  const { userData } = useSelector((state) => state.user);
 
   /*
    * Load conversations + current user
@@ -54,16 +55,11 @@ function SlideBar() {
 
         const conversationList = Array.isArray(data)
           ? data
-          : data?.conversations ||
-            data?.data ||
-            [];
+          : data?.conversations || data?.data || [];
 
         dispatch(setConversation(conversationList));
       } catch (error) {
-        console.error(
-          "Failed to load conversations:",
-          error
-        );
+        console.error("Failed to load conversations:", error);
       } finally {
         setLoading(false);
       }
@@ -86,22 +82,13 @@ function SlideBar() {
          *
          * {...}
          */
-        const currentUser =
-          data?.user ||
-          data?.data ||
-          data;
+        const currentUser = data?.user || data?.data || data;
 
-        console.log(
-          "Current user:",
-          currentUser
-        );
+        console.log("Current user:", currentUser);
 
         setUser(currentUser);
       } catch (error) {
-        console.error(
-          "Failed to load current user:",
-          error
-        );
+        console.error("Failed to load current user:", error);
       } finally {
         setUserLoading(false);
       }
@@ -109,7 +96,7 @@ function SlideBar() {
 
     loadConversations();
     loadCurrentUser();
-  }, [dispatch]);
+  }, [dispatch, userData?._id]);
 
   /*
    * Create new conversation
@@ -124,26 +111,14 @@ function SlideBar() {
 
       if (!data) return;
 
-      const newConversation =
-        data?.conversation ||
-        data?.data ||
-        data;
+      const newConversation = data?.conversation || data?.data || data;
 
-      dispatch(
-        addConversations(newConversation)
-      );
+      dispatch(addConversations(newConversation));
 
-      // Automatically select new conversation
-      dispatch(
-        setSelectedConversations(
-          newConversation
-        )
-      );
+      // IMPORTANT
+      dispatch(setSelectedConversations(newConversation));
     } catch (error) {
-      console.error(
-        "Failed to create conversation:",
-        error
-      );
+      console.error("Failed to create conversation:", error);
     } finally {
       setCreating(false);
     }
@@ -163,21 +138,16 @@ function SlideBar() {
       /*
        * Clear local user state
        */
-      dispatch(setUserData(null))
+      dispatch(setUserData(null));
 
-      dispatch(
-        setSelectedConversations(null)
-      );
+      dispatch(setSelectedConversations(null));
 
       /*
        * Redirect to login
        */
       window.location.href = "/";
     } catch (error) {
-      console.error(
-        "Failed to logout:",
-        error
-      );
+      console.error("Failed to logout:", error);
     } finally {
       // setLoggingOut(false);
     }
@@ -186,11 +156,7 @@ function SlideBar() {
   /*
    * User name
    */
-  const userName =
-    user?.fullName ||
-    user?.name ||
-    user?.displayName ||
-    "User";
+  const userName = user?.fullName || user?.name || user?.displayName || "User";
 
   /*
    * User avatar
@@ -214,75 +180,55 @@ function SlideBar() {
 
   return (
     <aside className="flex h-screen w-[230px] shrink-0 flex-col border-r border-white/[0.06] bg-[#0b0d12]">
-
       {/* Logo */}
       <div className="flex h-[68px] items-center gap-3 border-b border-white/[0.06] px-5">
-
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-sm font-bold text-black">
           ✦
         </div>
 
         <div>
-          <p className="text-sm font-semibold">
-            Aether
-          </p>
+          <p className="text-sm font-semibold">Aether</p>
 
-          <p className="text-[10px] text-slate-600">
-            AI WORKSPACE
-          </p>
+          <p className="text-[10px] text-slate-600">AI WORKSPACE</p>
         </div>
-
       </div>
 
       {/* New Chat */}
       <div className="p-3">
-
         <button
           type="button"
           onClick={handleNewChat}
           disabled={creating}
           className="flex w-full items-center justify-center gap-2 rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-black transition hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-60"
         >
-
           {creating ? (
-            <FiLoader
-              size={16}
-              className="animate-spin"
-            />
+            <FiLoader size={16} className="animate-spin" />
           ) : (
             <FiPlus size={17} />
           )}
 
-          {creating
-            ? "Creating..."
-            : "New Chat"}
-
+          {creating ? "Creating..." : "New Chat"}
         </button>
-
       </div>
 
       {/* Navigation */}
       <div className="px-3">
-
-        <NavItem
+        {/* <NavItem
           icon={<FiHome />}
           text="Overview"
           active
-        />
+        /> */}
 
-        <NavItem
+        {/* <NavItem
           icon={<FiFolder />}
           text="Projects"
-        />
-
+        /> */}
       </div>
 
       {/* Conversations */}
       <div className="mt-6 flex-1 overflow-y-auto px-3">
-
         {/* Header */}
         <div className="mb-2 flex items-center justify-between px-2">
-
           <span className="text-[10px] font-semibold tracking-widest text-slate-600">
             HISTORY
           </span>
@@ -290,128 +236,92 @@ function SlideBar() {
           <span className="text-[10px] text-slate-700">
             {conversations.length}
           </span>
-
         </div>
 
         {/* Loading */}
         {loading && (
           <div className="flex items-center gap-2 px-3 py-3 text-xs text-slate-600">
-
-            <FiLoader
-              size={13}
-              className="animate-spin"
-            />
-
+            <FiLoader size={13} className="animate-spin" />
             Loading conversations...
-
           </div>
         )}
 
         {/* Empty */}
-        {!loading &&
-          conversations.length === 0 && (
-            <div className="px-3 py-4 text-center">
+        {!loading && conversations.length === 0 && (
+          <div className="px-3 py-4 text-center">
+            <FiMessageSquare
+              className="mx-auto mb-2 text-slate-700"
+              size={20}
+            />
 
-              <FiMessageSquare
-                className="mx-auto mb-2 text-slate-700"
-                size={20}
-              />
+            <p className="text-xs text-slate-600">No conversations yet</p>
 
-              <p className="text-xs text-slate-600">
-                No conversations yet
-              </p>
-
-              <p className="mt-1 text-[10px] text-slate-700">
-                Start a new chat
-              </p>
-
-            </div>
-          )}
+            <p className="mt-1 text-[10px] text-slate-700">Start a new chat</p>
+          </div>
+        )}
 
         {/* Conversations */}
-        {!loading &&
-          conversations.length > 0 && (
-            <div className="space-y-1">
-
-              {conversations.map(
-                (conversation) => (
-                  <ConversationItem
-                    key={conversation._id}
-                    conversation={conversation}
-                    selectedConversation={
-                      selectedConversation
-                    }
-                    onSelect={() =>
-                      dispatch(
-                        setSelectedConversations(
-                          conversation
-                        )
-                      )
-                    }
-                  />
-                )
-              )}
-
-            </div>
-          )}
-
+        {!loading && conversations.length > 0 && (
+          <div className="space-y-1">
+            {conversations.map((conversation) => (
+              // <ConversationItem
+              //   key={conversation._id}
+              //   conversation={conversation}
+              //   selectedConversation={
+              //     selectedConversation
+              //   }
+              //   onSelect={() =>
+              //     dispatch(
+              //       setSelectedConversations(
+              //         conversation
+              //       )
+              //     )
+              //   }
+              // />
+              <ConversationItem
+                key={conversation._id}
+                conversation={conversation}
+                selectedConversation={selectedConversation}
+                onSelect={() =>
+                  dispatch(setSelectedConversations(conversation))
+                }
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Bottom */}
       <div className="border-t border-white/[0.06] p-3">
-
         {/* Settings */}
-        <NavItem
-          icon={<FiSettings />}
-          text="Settings"
-        />
+        <NavItem icon={<FiSettings />} text="Settings" />
 
         {/* User */}
         <div className="mt-2 flex items-center gap-2 rounded-lg px-2 py-2">
-
           {/* Avatar */}
           {userLoading ? (
-
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/[0.06]">
-
-              <FiLoader
-                size={13}
-                className="animate-spin text-slate-500"
-              />
-
+              <FiLoader size={13} className="animate-spin text-slate-500" />
             </div>
-
           ) : userAvatar ? (
-
             <img
               src={userAvatar}
               alt={userName}
               className="h-8 w-8 shrink-0 rounded-full object-cover"
             />
-
           ) : (
-
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-500/20 text-xs font-medium text-indigo-300">
               {userInitials}
             </div>
-
           )}
 
           {/* User information */}
           <div className="min-w-0 flex-1">
-
             <p className="truncate text-xs font-medium text-slate-200">
-
-              {userLoading
-                ? "Loading..."
-                : userName}
-
+              {userLoading ? "Loading..." : userName}
             </p>
 
-            <p className="truncate text-[10px] text-slate-600">
-              Free Plan
-            </p>
-
+            <p className="truncate text-[10px] text-slate-600">Free Plan</p>
           </div>
 
           {/* Credits */}
@@ -420,9 +330,7 @@ function SlideBar() {
             title="Credits"
             className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-slate-500 transition hover:bg-white/[0.06] hover:text-white"
           >
-            <FiCreditCard
-              size={14}
-            />
+            <FiCreditCard size={14} />
           </button>
 
           {/* Logout */}
@@ -433,37 +341,22 @@ function SlideBar() {
             disabled={loggingOut}
             className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-slate-500 transition hover:bg-red-500/10 hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-50"
           >
-
             {loggingOut ? (
-              <FiLoader
-                size={14}
-                className="animate-spin"
-              />
+              <FiLoader size={14} className="animate-spin" />
             ) : (
-              <FiLogOut
-                size={14}
-              />
+              <FiLogOut size={14} />
             )}
-
           </button>
-
         </div>
-
       </div>
-
     </aside>
   );
 }
 
-
 /*
  * Navigation item
  */
-function NavItem({
-  icon,
-  text,
-  active,
-}) {
+function NavItem({ icon, text, active }) {
   return (
     <button
       type="button"
@@ -473,31 +366,20 @@ function NavItem({
           : "text-slate-500 hover:bg-white/[0.04] hover:text-slate-200"
       }`}
     >
-
       {icon}
 
       {text}
-
     </button>
   );
 }
 
-
 /*
  * Conversation item
  */
-function ConversationItem({
-  conversation,
-  selectedConversation,
-  onSelect,
-}) {
-  const title =
-    conversation.title ||
-    "New conversation";
+function ConversationItem({ conversation, selectedConversation, onSelect }) {
+  const title = conversation.title || "New conversation";
 
-  const isSelected =
-    selectedConversation?._id ===
-    conversation._id;
+  const isSelected = selectedConversation?._id === conversation._id;
 
   return (
     <button
@@ -509,7 +391,6 @@ function ConversationItem({
           : "text-slate-500 hover:bg-white/[0.04] hover:text-slate-200"
       }`}
     >
-
       <FiMessageSquare
         size={13}
         className={`shrink-0 ${
@@ -519,9 +400,7 @@ function ConversationItem({
         }`}
       />
 
-      <span className="min-w-0 flex-1 truncate">
-        {title}
-      </span>
+      <span className="min-w-0 flex-1 truncate">{title}</span>
 
       <FiChevronRight
         size={13}
@@ -531,7 +410,6 @@ function ConversationItem({
             : "opacity-0 group-hover:opacity-100"
         }`}
       />
-
     </button>
   );
 }
