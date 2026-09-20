@@ -15,6 +15,8 @@ import {
   FiMessageSquare,
 } from "react-icons/fi";
 
+import Markdown from 'react-markdown';
+
 import {
   useDispatch,
   useSelector,
@@ -568,7 +570,9 @@ function Message({
       >
 
         <div className="whitespace-pre-wrap">
-          {message.content}
+         <Markdown>
+           {message.content}
+         </Markdown>
         </div>
 
       </div>

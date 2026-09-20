@@ -7,9 +7,9 @@ dotenv.config();
 const groq = new ChatGroq({
     model: "openai/gpt-oss-120b",
     apiKey:process.env.GROQ_API_KEY,
-    temperature: 0.7,
-    maxTokens: 2048,                     // ← Critical: enough for reasoning + output
-    reasoningEffort: "low",
+    // temperature: 0.7,
+    // maxTokens: 2048,                     // ← Critical: enough for reasoning + output
+    // reasoningEffort: "low",
 })
 
 

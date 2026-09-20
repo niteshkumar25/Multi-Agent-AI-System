@@ -1,12 +1,12 @@
 import axios from "axios"
 import { graph } from "../graph/graph.js"
+import { addMessage } from "../config/memory.js"
 export const agent = async (req,res)=>{
     try {
         const {prompt, conversationId} = req.body
 
-        console.log("prompt, conversationId", prompt, conversationId);
-        
-      
+        //ADD Message in radis 
+        await addMessage(conversationId,"user", prompt) 
       
         await axios.post(`${process.env.CHATSERVICE_URL}/save-message`,{
             conversationId,
@@ -21,8 +21,7 @@ export const agent = async (req,res)=>{
 
         const response = result.aiResponse
 
-        console.log("response, response", response)
-        // const response = "hello world"
+         await addMessage(conversationId,"assistant", response)
 
         await axios.post(`${process.env.CHATSERVICE_URL}/save-message`,{
             conversationId,
