@@ -56,6 +56,8 @@ export const saveMessage = async (req, res) => {
 
     return res.status(200).json(message);
   } catch (error) {
+    console.log(error);
+    
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -63,8 +65,7 @@ export const saveMessage = async (req, res) => {
 export const getMessages = async (req, res) => {
   try {
 
-
-    console.log("conversationId", req.params.conversationId);
+    console.log("req.params.conversationId", req.params.conversationId);
     
 
     const messages = await Message.find({
@@ -72,6 +73,12 @@ export const getMessages = async (req, res) => {
     }).sort({
       createdAt: 1,
     });
+
+
+    console.log("messages", messages);
+    
+
+    
 
     return res.status(200).json(messages);
   } catch (error) {

@@ -6,11 +6,11 @@ export const agent = async (req,res)=>{
         const {prompt, conversationId} = req.body
 
       
-        await axios.post(`${process.env.CHATSERVICE_URL}/save-message`,{
+       let data =  await axios.post(`${process.env.CHATSERVICE_URL}/save-message`,{
             conversationId,
             role:"user",
             content:prompt
-        })
+        })        
 
         const result = await graph.invoke({
             prompt,conversationId

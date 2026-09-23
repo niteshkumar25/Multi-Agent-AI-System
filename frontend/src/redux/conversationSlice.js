@@ -9,58 +9,37 @@ const conversationSlice = createSlice({
   },
 
   reducers: {
-    setConversation: (
-      state,
-      action
-    ) => {
-      state.conversations =
-        action.payload;
+    setConversation: (state, action) => {
+      state.conversations = action.payload;
     },
 
-    addConversations: (
-      state,
-      action
-    ) => {
-      state.conversations.unshift(
-        action.payload
+    addConversations: (state, action) => {
+      state.conversations.unshift(action.payload);
+    },
+
+    setSelectedConversations: (state, action) => {
+      state.selectedConversation = action.payload;
+    },
+
+    updateConversation: (state, action) => {
+      const index = state.conversations.findIndex(
+        (conversation) => conversation._id === action.payload._id
       );
-    },
 
-    setSelectedConversations: (
-      state,
-      action
-    ) => {
-      state.selectedConversation =
-        action.payload;
-    },
-
-    updateConversationTitle: (
-      state,
-      action
-    ) => {
-      const {
-        conversationId,
-        title,
-      } = action.payload;
-
-      const conversation =
-        state.conversations.find(
-          (conversation) =>
-            conversation._id ===
-            conversationId
-        );
-
-      if (conversation) {
-        conversation.title =
-          title;
+      if (index !== -1) {
+        state.conversations[index] = {
+          ...state.conversations[index],
+          ...action.payload,
+        };
       }
 
       if (
-        state.selectedConversation?._id ===
-        conversationId
+        state.selectedConversation?._id === action.payload._id
       ) {
-        state.selectedConversation.title =
-          title;
+        state.selectedConversation = {
+          ...state.selectedConversation,
+          ...action.payload,
+        };
       }
     },
   },
@@ -70,7 +49,7 @@ export const {
   setConversation,
   addConversations,
   setSelectedConversations,
-  updateConversationTitle,
+  updateConversation,
 } = conversationSlice.actions;
 
 export default conversationSlice.reducer;
