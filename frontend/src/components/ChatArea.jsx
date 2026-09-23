@@ -13,11 +13,12 @@ import {
 } from "react-icons/fi";
 
 import { useDispatch, useSelector } from "react-redux";
+import ReactMarkdown from "react-markdown";
 
 import {
   addConversations,
   setSelectedConversations,
-  updateConversation
+  updateConversationTitle
 } from "../redux/conversationSlice";
 
 import { setMessages } from "../redux/messageSlice";
@@ -25,6 +26,7 @@ import { setMessages } from "../redux/messageSlice";
 import { createConversation } from "../features/createConversation";
 import getMessages from "../features/getMessages";
 import sendMessage from "../features/sendMessage";
+import updateConversation from "../features/updateConversation";
 
 function ChatArea() {
   const dispatch = useDispatch();
@@ -206,11 +208,21 @@ function ChatArea() {
         );
       }
 
-      /*
-       * Create temporary user message
-       *
-       * THIS FIXES THE FIRST MESSAGE ISSUE.
-       */
+      if(messages.length === 0){
+        const title = createTitle(prompt);
+
+        await updateConversation(conversationId,title)
+
+        dispatch(
+              updateConversationTitle({
+                conversationId,
+                title,
+              })
+            );
+
+
+      }
+
       const temporaryUserMessage = {
         _id: `temp-user-${Date.now()}`,
         conversationId,
@@ -249,15 +261,6 @@ function ChatArea() {
         response
       );
 
-      /*
-       * Backend currently returns:
-       *
-       * res.status(200).json(response)
-       *
-       * Therefore response can be:
-       * string
-       * or object
-       */
       const aiContent =
         typeof response === "string"
           ? response
@@ -266,9 +269,7 @@ function ChatArea() {
             response?.message ||
             "";
 
-      /*
-       * Show AI response immediately
-       */
+  
       if (aiContent) {
         const assistantMessage = {
           _id: `temp-ai-${Date.now()}`,
@@ -293,12 +294,7 @@ function ChatArea() {
         );
       }
 
-      /*
-       * Fetch actual messages from database.
-       *
-       * This replaces temporary messages
-       * with real MongoDB messages.
-       */
+
       const updatedData =
         await getMessages(
           conversationId
@@ -544,9 +540,7 @@ function ChatArea() {
   );
 }
 
-/*
- * Welcome screen
- */
+
 function WelcomeScreen({
   onAgentSelect,
 }) {
@@ -646,9 +640,7 @@ function WelcomeScreen({
   );
 }
 
-/*
- * Message
- */
+
 function Message({ message }) {
   /*
    * Your backend uses "user" and
@@ -685,7 +677,9 @@ function Message({ message }) {
             : "border border-white/[0.06] bg-[#11141b] text-slate-300"
         }`}
       >
-        {message.content}
+        <ReactMarkdown>
+         {message.content}  
+        </ReactMarkdown>
       </div>
 
       {isUser && (
@@ -732,5 +726,24 @@ function AgentCard({
     </button>
   );
 }
+
+
+
+function createTitle(prompt) {
+  const cleaned =
+    prompt
+      .replace(/\s+/g, " ")
+      .trim();
+
+  if (cleaned.length <= 40) {
+    return cleaned;
+  }
+
+  return (
+    cleaned.slice(0, 40) +
+    "..."
+  );
+}
+
 
 export default ChatArea;

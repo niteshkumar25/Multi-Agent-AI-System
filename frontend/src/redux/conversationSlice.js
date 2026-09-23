@@ -21,27 +21,14 @@ const conversationSlice = createSlice({
       state.selectedConversation = action.payload;
     },
 
-    updateConversation: (state, action) => {
-      const index = state.conversations.findIndex(
-        (conversation) => conversation._id === action.payload._id
-      );
-
-      if (index !== -1) {
-        state.conversations[index] = {
-          ...state.conversations[index],
-          ...action.payload,
-        };
+      updateConversationTitle: (state, action) => {
+        const { conversationId, title } = action.payload;
+        const convo = state.conversations.find(c => c._id === conversationId);
+        if (convo) convo.title = title;
+        if (state.selectedConversation?._id === conversationId) {
+          state.selectedConversation.title = title;
+        }
       }
-
-      if (
-        state.selectedConversation?._id === action.payload._id
-      ) {
-        state.selectedConversation = {
-          ...state.selectedConversation,
-          ...action.payload,
-        };
-      }
-    },
   },
 });
 
@@ -49,7 +36,7 @@ export const {
   setConversation,
   addConversations,
   setSelectedConversations,
-  updateConversation,
+  updateConversationTitle,
 } = conversationSlice.actions;
 
 export default conversationSlice.reducer;
