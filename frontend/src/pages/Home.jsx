@@ -150,7 +150,7 @@ function Home() {
       <ChatArea />
 
       {/* Artifact */}
-      <Artifact />
+      {/* <Artifact /> */}
 
       {/* Login Overlay */}
       {!userData && (

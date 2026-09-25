@@ -10,7 +10,8 @@ const messageSchema = new mongoose.Schema(
         type:String,
         enum:["user", "assistant"]
     },
-    content:{type:String}
+    content:{type:String},
+    images:[String]
   },
   { timestamps: true }
 );      

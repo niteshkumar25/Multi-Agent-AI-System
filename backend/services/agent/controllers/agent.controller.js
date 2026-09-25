@@ -3,7 +3,9 @@ import { graph } from "../graph/graph.js"
 import { addMessage } from "../config/memory.js"
 export const agent = async (req,res)=>{
     try {
-        const {prompt, conversationId} = req.body
+        const {prompt, conversationId,agent} = req.body
+
+        console.log("agent", agent)
 
       
        let data =  await axios.post(`${process.env.CHATSERVICE_URL}/save-message`,{
@@ -13,11 +15,12 @@ export const agent = async (req,res)=>{
         })        
 
         const result = await graph.invoke({
-            prompt,conversationId
+            prompt,conversationId,agent
 
         })
 
         const response = result.aiResponse
+        const images = result.images || []
 
          await addMessage(conversationId,"user", prompt) 
 
@@ -26,11 +29,15 @@ export const agent = async (req,res)=>{
         await axios.post(`${process.env.CHATSERVICE_URL}/save-message`,{
             conversationId,
             role:"assistant",
-            content:response
+            content:response,
+            images:images
         })
 
 
-        return res.status(200).json(response)
+        return res.status(200).json({
+            answer:response,
+            images:images
+        })
 
     } catch (error) {
         console.log(error);
